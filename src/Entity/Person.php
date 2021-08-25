@@ -21,16 +21,21 @@ class Person
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("person:read")
+     * @Groups("place:read")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("person:read")
+     * @Groups("place:read")
      */
     private $firstname;
 
     /**
      * @ORM\ManyToMany(targetEntity=Place::class, inversedBy="likedBy")
+     * @Groups("place:read")
      */
     private $placesLiked;
 

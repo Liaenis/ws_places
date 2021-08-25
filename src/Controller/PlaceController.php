@@ -16,7 +16,7 @@ class PlaceController extends AbstractController
      */
     public function index(PlaceRepository $placeRepository ,NormalizerInterface $normalizer): Response { 
         $places = $placeRepository->findAll(); 
-        $normalized = $normalizer->normalize($places); 
+        $normalized = $normalizer->normalize($places, null,['groups'=>'place:read']);
         $json = json_encode($normalized); 
         $reponse = new Response($json, 200, [ 'content-type' => 'application/json' ]); 
         return $reponse;
@@ -27,7 +27,7 @@ class PlaceController extends AbstractController
      */ 
     public function findById(PlaceRepository $placeRepository,$id ,NormalizerInterface $normalizer): Response { 
         $place = $placeRepository->find($id); 
-        $normalized = $normalizer->normalize($person,null,['groups'=>'place:read']);
+        $normalized = $normalizer->normalize($place, null,['groups'=>'place:read']);
         $json = json_encode($normalized); 
         $reponse = new Response($json, 200, [ 'content-type' => 'application/json' ]); 
         return $reponse; 
