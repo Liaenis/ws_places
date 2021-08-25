@@ -27,7 +27,7 @@ class PlaceController extends AbstractController
      */ 
     public function findById(PlaceRepository $placeRepository,$id ,NormalizerInterface $normalizer): Response { 
         $place = $placeRepository->find($id); 
-        $normalized = $normalizer->normalize($place); 
+        $normalized = $normalizer->normalize($person,null,['groups'=>'place:read']);
         $json = json_encode($normalized); 
         $reponse = new Response($json, 200, [ 'content-type' => 'application/json' ]); 
         return $reponse; 
