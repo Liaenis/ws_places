@@ -7,10 +7,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+use App\Repository\PlaceRepository;
+
 class PlaceController extends AbstractController
 {
     /**
-     * @Route("/place", name="place", methods="GET")
+     * @Route("/api/place", name="place", methods="GET")
      */
     public function index(PlaceRepository $placeRepository ,NormalizerInterface $normalizer): Response { 
         $places = $placeRepository->findAll(); 
