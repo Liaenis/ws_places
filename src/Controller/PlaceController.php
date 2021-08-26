@@ -40,8 +40,8 @@ class PlaceController extends AbstractController
     /** 
 * @Route("/api/place", name="api_place_add",methods="POST") 
 */ 
-public function add(EntityManagerInterface $entityManager, Request $request, SerializerInterface $serializer, ValidatorInterface $validator)
-{ 
+    public function add(EntityManagerInterface $entityManager, Request $request, SerializerInterface $serializer, ValidatorInterface $validator)
+    { 
     $contenu = $request->getContent(); 
     try { $endroit = $serializer->deserialize($contenu, Place::class, 'json');
        $errors = $validator->validate($endroit); 
@@ -52,10 +52,18 @@ public function add(EntityManagerInterface $entityManager, Request $request, Ser
        $entityManager->persist($endroit); 
        $entityManager->flush(); 
        return $this->json($endroit, 201, [], ['groups' => 'place:read']); 
-   } 
-   catch (NotEncodableValueException $e) 
-   { 
+    } 
+    catch (NotEncodableValueException $e) 
+    { 
        return $this->json(['status' => 400,'message' => $e->getMessage()]); 
-   } 
-}
+    } 
+    }
+    public function addlike(EntityManagerInterface $entityManager, Request $request,
+    SerializerInterface $serializer, ValidatorInterface $validator)
+    {
+        
+        $entityManager->persist(); 
+        $entityManager->flush(); 
+    }
+
 }
