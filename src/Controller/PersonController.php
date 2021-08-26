@@ -38,14 +38,24 @@ class PersonController extends AbstractController
         return $reponse; 
     }
 
-    /** 
-    *@Route("/api/person", name="api_person_add",methods="POST") 
-    */ 
-    public function add(EntityManagerInterface $entityManager, Request $request, SerializerInterface $serializer, ValidatorInterface $validator) 
+/** 
+* @Route("/api/person/", name="api_person_add",methods="POST") 
+*/ 
+public function add(EntityManagerInterface $entityManager, Request $request, SerializerInterface $serializer, ValidatorInterface $validator)
+ { 
+     $contenu = $request->getContent(); 
+     try { $personne = $serializer->deserialize($contenu, Person::class, 'json');
+        $errors = $validator->validate($personne); 
+        if (count($errors) > 0) { 
+            return $this->json($errors, 400); 
+        } 
+        $entityManager->persist($personne); 
+        $entityManager->flush(); 
+        return $this->json($personne, 201, [], ['groups' => 'person:read']); 
+    } 
+    catch (NotEncodableValueException $e) 
     { 
-        $contenu = $request->getContent(); 
-        $personne = $serializer->deserialize($contenu, Person::class, 'json'); 
-        $entityManager->persist($personne); $entityManager->flush(); 
-        return $this->json($personne, 201, [], ['groups' => 'person:read']);
-    }
+        return $this->json(['status' => 400,'message' => $e->getMessage()]); 
+    } 
+}
 }
