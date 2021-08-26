@@ -6,8 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Exception\NotEncodableValueException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use App\Repository\PersonRepository;
+use App\Entity\Person;
 
 class PersonController extends AbstractController
 {
@@ -31,5 +36,16 @@ class PersonController extends AbstractController
         $json = json_encode($normalized); 
         $reponse = new Response($json, 200, [ 'content-type' => 'application/json' ]); 
         return $reponse; 
+    }
+
+    /** 
+    *@Route("/api/person", name="api_person_add",methods="POST") 
+    */ 
+    public function add(EntityManagerInterface $entityManager, Request $request, SerializerInterface $serializer, ValidatorInterface $validator) 
+    { 
+        $contenu = $request->getContent(); 
+        $personne = $serializer->deserialize($contenu, Person::class, 'json'); 
+        $entityManager->persist($personne); $entityManager->flush(); 
+        return $this->json($personne, 201, [], ['groups' => 'person:read']);
     }
 }

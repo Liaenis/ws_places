@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 use App\Repository\PlaceRepository;
+use App\Entity\Place;
 
 class PlaceController extends AbstractController
 {
