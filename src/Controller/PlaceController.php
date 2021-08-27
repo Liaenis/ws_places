@@ -58,12 +58,10 @@ class PlaceController extends AbstractController
        return $this->json(['status' => 400,'message' => $e->getMessage()]); 
     } 
     }
-    public function addlike(EntityManagerInterface $entityManager, Request $request,
-    SerializerInterface $serializer, ValidatorInterface $validator)
+    public function addlike(EntityManagerInterface $paraEntityManager, 
+    ValidatorInterface $validator)
     {
-        
-        $entityManager->persist(); 
-        $entityManager->flush(); 
+
     }
 
 }
